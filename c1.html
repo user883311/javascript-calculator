@@ -1,0 +1,291 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        .body {}
+
+        #calculator {
+            justify-content: center;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+            display: grid;
+            border: 2px solid green;
+            width: 220px;
+            ;
+        }
+
+        #displayPanel {
+            height: 60px;
+            width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+            display: grid;
+            grid-template-rows: 2fr 1fr;
+            border: 2px solid black;
+            background: rgb(194, 172, 172);
+        }
+
+        #result {
+            border-bottom: solid 1px black;
+        }
+
+        #keypad {
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            grid-template-columns: repeat(4, 50px);
+            grid-template-rows: repeat(6, 50px);
+        }
+
+        .functionButton,
+        .equalButton {
+            display: block;
+            border: 2px solid black;
+            background: grey;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+        }
+
+        .digitButton {
+            display: block;
+            border: 2px solid black;
+            background: rgb(39, 39, 39);
+            color: white;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+        }
+
+        .button:hover {
+            background: rgb(95, 95, 95);
+        }
+    </style>
+    <title>
+        Javascript Calculator 1
+    </title>
+</head>
+
+<body>
+    <div id="calculator">
+        <div id="displayPanel">
+            <div id="result"></div>
+            <div id="formula"></div>
+        </div>
+        <div id="keypad">
+            <a class="functionButton" id="CBtn" onclick="updateRegister('C')">C</a>
+            <a class="functionButton" id="ACBtn" onclick="AC()">AC</a>
+            <a class="digitButton" id="sevenBtn" onclick="updateRegister('7')">7</a>
+            <a class="digitButton" id="eightBtn" onclick="updateRegister(8)">8</a>
+            <a class="digitButton" id="nineBtn" onclick="updateRegister(9)">9</a>
+            <a class="digitButton" id="sixBtn" onclick="updateRegister(6)">6</a>
+            <a class="digitButton" id="fiveBtn" onclick="updateRegister(5)">5</a>
+            <a class="digitButton" id="fourBtn" onclick="updateRegister(4)">4</a>
+            <a class="functionButton" id="divisionBtn" onclick="updateFlag('/')">/</a>
+            <a class="digitButton" id="oneBtn" onclick="updateRegister(1)">1</a>
+            <a class="digitButton" id="twoBtn" onclick="updateRegister(2)">2</a>
+            <a class="digitButton" id="threeBtn" onclick="updateRegister(3)">3</a>
+            <a class="functionButton" id="multiplicationBtn" onclick="updateFlag('x')">x</a>
+            <a class="digitButton" id="zeroBtn" onclick="updateRegister(0)">0</a>
+            <a class="digitButton" id="decimalPointBtn" onclick="updateRegister('.')">.</a>
+            <a class="functionButton" id="minusBtn" onclick="updateFlag('-')">-</a>
+            <a class="equalButton" id="equalBtn" onclick="equal()">=</a>
+            <a class="functionButton" id="plusBtn" onclick="updateFlag('+')">+</a>
+        </div>
+    </div>
+    <script>
+        // Calculations variables
+        var xRegister = "", yRegister = "", inProgressFormula = ""; 
+        var mode; // can be (xRegister)
+        var statusRegister = ""; // operands or functions
+        var result, resultInt;
+
+        function updateRegister(input) {
+            // we need to be working with strings
+            console.log("calling updateRegister with input =", input);
+            xRegister.toString();
+            yRegister.toString();
+
+            // If users decides to wipe off the latest register (x or y)
+            if (input == "C") {
+                if (statusRegister == "") {
+                    // means user is still filling xRegister
+                    xRegister = "";
+                }
+                else {
+                    // means user has already moved to yRegister
+                    yRegister = "";
+                }
+            }
+            else if (statusRegister == "") {
+                if (result!="") {
+                    xRegister = inProgressFormula = input;
+                    
+                }
+                else {
+                    xRegister += input;
+                    inProgressFormula += input;
+                    
+                }
+                console.log("now xRegister =", xRegister);
+
+            }
+            else {
+                yRegister += input;
+                inProgressFormula += input;
+                console.log("now yRegister =", yRegister);
+            }
+
+            //inProgressFormula += xRegister;
+            updateDisplayedFormula(inProgressFormula);
+        }
+
+        function updateFlag(operationType) {
+            console.log("calling updateFlag with:", operationType);
+            if (statusRegister != "") {
+                equal();
+                xRegister = result;
+                // applyFunction(statusRegister, xRegister, yRegister); 
+            }
+            statusRegister = operationType;
+
+            // now for the formula display
+            if (["+", "-", "%"].indexOf(operationType) != -1) {
+                inProgressFormula += operationType;
+            }
+            if (["/", "x"].indexOf(operationType) != -1) {
+                if ((/^\d+(.\d+)?$/).test(inProgressFormula)) {
+                    inProgressFormula += operationType;
+                }
+                else {
+                    inProgressFormula = "(" + inProgressFormula + ")" + operationType;
+                }
+
+            }
+            if (["SQRT"].indexOf(operationType) != -1) {
+                inProgressFormula = operationType + "(" + inProgressFormula + ")";
+            }
+            updateDisplayedFormula(inProgressFormula);
+        }
+
+        function equal() {
+            console.log("calling equal");
+            applyFunction(statusRegister, xRegister, yRegister);
+        }
+
+        function takeOffLastDecimalPoint(str) {
+            console.log("calling takeOffLastDecimalPoint");
+            if (str[str.length - 1] == ".") {
+                str = str.slice(0, str.length - 1);
+                console.log("took off a decimal point");
+            };
+        }
+
+        function convert2FloatsToIntegers(x, y) {
+            /* x : string or number
+            y : string or number
+            Returns an array of x and y converted to whole numbers by multiplication by
+            power of ten. 
+            */
+            x = x.toString(); y = y.toString();
+            console.log(x, y);
+            let xDecimalPointPosition = x.indexOf(".");
+            let yDecimalPointPosition = y.indexOf(".");
+            console.log("xDecimalPointPosition", xDecimalPointPosition);
+            console.log("yDecimalPointPosition", yDecimalPointPosition);
+            let maxDecimals;
+            if (xDecimalPointPosition == -1 && yDecimalPointPosition == -1) { maxDecimals = 0 }
+            else {
+                maxDecimals = Math.max(x.length - xDecimalPointPosition - 1, y.length - yDecimalPointPosition - 1);
+            }
+
+            console.log("maxDecimals", maxDecimals);
+            if (maxDecimals != -1) {
+                var xInt = x * Math.pow(10, maxDecimals);
+                var yInt = y * Math.pow(10, maxDecimals);
+
+            };
+            xInt *= 1; yInt *= 1; // this is converts string to integer
+            console.log(xInt, yInt);
+            return [xInt || x, yInt || y];
+        }
+
+        function applyFunction(flag, x, y) {
+            console.log("calling applyFunction(flag = " + flag + ", x = " + x + ", y = " + y + ")");
+            // clean up the registers
+            // take out the last decimal point if no decimal is following
+            takeOffLastDecimalPoint(x);
+            if (y) { takeOffLastDecimalPoint(y) };
+            x *= 1; y *= 1;
+            // convert float numbers to integers
+            /*
+            let xInt = convert2FloatsToIntegers(x, y)[0];
+            let yInt = convert2FloatsToIntegers(x, y)[1];
+            console.log("xInt", xInt);
+            console.log("yInt", yInt); */
+
+            // apply the operation/fction
+
+            switch (flag) {
+                case "+":
+                    console.log("case addition!");
+                    result = x + y;
+                    console.log("result", result, "=", x, "+", y);
+                    break;
+
+                case "-":
+                    console.log("case subtraction!");
+                    result = x - y;
+                    break;
+
+                case "x":
+                    result = x * y;
+                    console.log("result", result, "=", x, "x", y);
+                    break;
+
+                case "/":
+                    result = x / y;
+                    break;
+
+                case "": // when just pressing "=" sign with no statusRegister
+                    result = x;
+                    break;
+            }
+            console.log("rsult =", result);
+            /*let xDecimalPointPosition = x.indexOf(".");
+            let yDecimalPointPosition = y.indexOf(".");
+
+            result = resultInt.toString(); */
+            // splice the decimal point if required
+
+            // display results
+            document.getElementById("result").innerHTML = result;
+            // reset registers and statusRegister/flag
+            xRegister = "";
+            yRegister = "";
+            statusRegister = "";
+        }
+
+        function AC() {
+            console.log("calling AC()");
+            xRegister = yRegister = statusRegister = result = inProgressFormula = "";
+            document.getElementById("result").innerHTML = result;
+            updateDisplayedFormula(inProgressFormula);
+        }
+        function updateDisplayedFormula(input) {
+            console.log("calling updateDisplayedFormula(" + input + ")");
+            document.getElementById("formula").innerHTML = input;
+        }
+    </script>
+</body>
+<footer>
+
+</footer>
+
+</html>
