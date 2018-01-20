@@ -1,0 +1,179 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        .body {}
+
+        #calculator {
+            justify-content: center;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+            display: grid;
+            border: 2px solid green;
+            width: 220px;
+            ;
+        }
+
+        #displayPanel {
+            height: 60px;
+            width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+            display: grid;
+            grid-template-rows: 2fr 1fr;
+            border: 2px solid black;
+            background: rgb(194, 172, 172);
+        }
+
+        #result {
+            border-bottom: solid 1px black;
+        }
+
+        #keypad {
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            grid-template-columns: repeat(4, 50px);
+            grid-template-rows: repeat(6, 50px);
+        }
+
+        .functionButton,
+        .equalButton {
+            display: block;
+            border: 2px solid black;
+            background: grey;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+        }
+
+        .digitButton {
+            display: block;
+            border: 2px solid black;
+            background: rgb(39, 39, 39);
+            color: white;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 2px 3px rgb(187, 186, 186);
+        }
+
+        .button:hover {
+            background: rgb(95, 95, 95);
+        }
+    </style>
+    <title>
+        Javascript Calculator 1
+    </title>
+</head>
+
+<body>
+    <div id="calculator">
+        <div id="displayPanel">
+            <div id="result"></div>
+            <div id="formula"></div>
+        </div>
+        <div id="keypad">
+            <a class="functionButton" id="CBtn" onclick="keyStroke('C')">C</a>
+            <a class="functionButton" id="ACBtn" onclick="keyStroke('AC')">AC</a>
+            <a class="digitButton" id="sevenBtn" onclick="keyStroke('7')">7</a>
+            <a class="digitButton" id="eightBtn" onclick="keyStroke('8')">8</a>
+            <a class="digitButton" id="nineBtn" onclick="keyStroke('9')">9</a>
+            <a class="digitButton" id="sixBtn" onclick="keyStroke('6')">6</a>
+            <a class="digitButton" id="fiveBtn" onclick="keyStroke('5')">5</a>
+            <a class="digitButton" id="fourBtn" onclick="keyStroke('4')">4</a>
+            <a class="functionButton" id="divisionBtn" onclick="keyStroke('/')">/</a>
+            <a class="digitButton" id="oneBtn" onclick="keyStroke('1')">1</a>
+            <a class="digitButton" id="twoBtn" onclick="keyStroke('2')">2</a>
+            <a class="digitButton" id="threeBtn" onclick="keyStroke('3')">3</a>
+            <a class="functionButton" id="multiplicationBtn" onclick="keyStroke('*')">x</a>
+            <a class="digitButton" id="zeroBtn" onclick="keyStroke('0')">0</a>
+            <a class="digitButton" id="decimalPointBtn" onclick="keyStroke('.')">.</a>
+            <a class="functionButton" id="minusBtn" onclick="keyStroke('-')">-</a>
+            <a class="equalButton" id="equalBtn" onclick="keyStroke('=')">=</a>
+            <a class="functionButton" id="plusBtn" onclick="keyStroke('+')">+</a>
+        </div>
+    </div>
+    <script>
+        var expArr = ["", "", ""] // [aStr, opsStr, bStr]
+        var operandArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
+        var operandColl = [
+            { 0: "digit" },
+            { 1: "digit" },
+            { 2: "digit" },
+            { 3: "digit" },
+            { 4: "digit" },
+            { 5: "digit" },
+            { 6: "digit" },
+            { 7: "digit" },
+            { 8: "digit" },
+            { 9: "digit" },
+            { 10: "digit" },
+            { ".": "decimal point" }
+        ]
+        var operatorArr = ["+", "-", "*", "/", "="];
+
+        var mode = 0;
+        // mode = 0 : keying in 1st operand
+        // mode = 1 : 1st operand keyed in / operator keyed in
+        // mode = 2 : keying in 2nd operand
+
+        var aStr = opStr = bStr = "";
+        function keyStroke(inputStr) {
+            // inputStr: string
+            if (mode == 0 && inputStr == "=") {
+                expArr = [aStr, inputStr, undefined];
+                aStr = evaluateExpression(expArr);
+            }
+            else if (mode == 0 && operandArr.indexOf(inputStr) != -1) {
+                aStr += inputStr;
+            }
+            else if (mode == 0 && operatorArr.indexOf(inputStr) != -1) {
+                opStr = inputStr;
+                mode = 1;
+            }
+            else if (mode == 1 && operandArr.indexOf(inputStr) != -1) {
+                mode = 2;
+                bStr += inputStr;
+            }
+            else if (mode == 1 && operatorArr.indexOf(inputStr) != -1) {
+                opStr = inputStr;
+            }
+            else if (mode == 2 && operandArr.indexOf(inputStr) != -1) {
+                bStr += inputStr;
+            }
+            else if (mode == 2 && operatorArr.indexOf(inputStr) != -1) {
+                expArr = [aStr, opStr, bStr];
+                aStr = evaluateExpression(expArr);
+                opStr = inputStr;
+                bStr = "";
+                mode = 1;
+            }
+            console.log("mode", mode, "inputStr", inputStr, [aStr, opStr, bStr]);
+        }
+
+        function evaluateExpression(expArr) {
+            console.log("calling evaluateExpression(" + expArr + ")");
+            let a = expArr[0], op = expArr[1]; b = expArr[2];
+            // this function returns the result of the expression evaluation
+            console.log(a, op, b);
+            if (op == "+") { return a + b };
+            if (op == "-") { return a - b };
+            if (op == "*") { return a * b };
+            if (op == "/") { return a / b };
+            if (op == "=") { return a };
+            return "error: function unknown";
+        }
+
+    </script>
+</body>
+<footer>
+
+</footer>
+
+</html>
