@@ -19,44 +19,70 @@ var binaryOps = ["+", "-", "*", "/"];
 var equalSign = "=";
 var f = "0";
 var result;
+var lastNumberIsResultOfEqualOperation = false;
 
 function keyStroke(input) {
+    // if last number in string is a NOT a result, 
+    // THEN add last input character to the formula string
+
+    // ELSE IF last number in string is a result AND
+    // last input character is a digit
+    // then wipe off result from formula and start with
+    // the new number
+    f += input;
+    if (lastNumberIsResultOfEqualOperation) {
+        if (operandArr.indexOf(input) != -1) {
+            f = input;
+            // reset lastNumberIsResultOfEqualOperation
+            lastNumberIsResultOfEqualOperation = false;
+        }
+    }
+
+    // if the first number starts with a "0"
+    // then delete this first "0"
+    f = f.replace(/^00/g, "0");
+    f = f.replace(/0+([1-9]+\.?\d*)/g, "$1");
+
     // if the 2 last characters include are binary operators
     // => remove the 2nd last binary operator from the string
     if (binaryOps.indexOf(f[f.length - 1]) != -1 && binaryOps.indexOf(f[f.length - 2]) != -1) {
         f = f.slice(0, f.length - 1);
     }
 
-    // if the string includes 2 nos of binary operators
+    // if the string includes 2 nos of binary operators (excluding the 
+    // the first possible "-" sign), 
     // => evaluate the formula without the last binary operator
     // => formula = result + new binary operator 
-    if (charOccurencesInString(f, binaryOps) > 1) {
-        result = eval(f[f.length - 1]);
+    if (charOccurencesInString(f.slice(1), binaryOps) > 1) {
+        result = eval(f.slice(0, f.length - 1));
         f = result.toString() + f[f.length - 1];
+        // lastNumberIsResultOfEqualOperation = true;
     }
 
     // if string includes 1 nos of binary operator and the equal sign 
     // => evaluate the formula without the last character (the equal sign)
     // => formula = result 
     if (charOccurencesInString(f, binaryOps) == 1 && f[f.length - 1] == equalSign) {
-        result = eval(f[f.length - 1]);
+        result = eval(f.slice(0, f.length - 1));
         f = result.toString();
+        lastNumberIsResultOfEqualOperation = true;
     }
 
     // if last number in string includes 2 decimal points 
     // => remove the last decimal point from the formula
     f = f.replace(/(\.\d*)\./, "$1");
 
-    // if string includes "pm" 
+    // if string includes "p" 
     // => apply unary operator to the last number in the formula string 
-    f = f.replace(/(\d*?\.?\d*?)pm/, "-$1"); // for "+/-"
+    f = f.replace(/(\d*?\.?\d*?)p/, "-$1"); // for "+/-"
 
     // if string includes %
     // => apply unary operator to the last number in the formula string 
-    f = f.replace(f.match(/\d*\.?\d*%/), divideByHundred(f.match(/\d*\.?\d*%/)[0].slice(0, this.length - 1)));
+    // f = f.replace(f.match(/\d*\.?\d*%/), divideByHundred(f.match(/\d*\.?\d*%/)[0].slice(0, this.length - 1)));
 
     // update display on the display panel
     display(f);
+    console.log(lastNumberIsResultOfEqualOperation);
 }
 
 function display(f) {
@@ -68,6 +94,12 @@ function display(f) {
 
     // if last char is operator
     // then toggle the operator button
+    console.log("f = "+f);
+    var d;
+    d = f.match(/-?\d+\.?\d*/g);
+    d = d[d.length - 1];
+    d = d.replace(/^(-?)0+/, "$10");
+    console.log("display(f) = ", d);
 }
 
 function charOccurencesInString(aStr, anArrOfChars) {
@@ -86,18 +118,20 @@ function charOccurencesInString(aStr, anArrOfChars) {
 
 function divideByHundred(nStr) {
     var decimals = test.length - test.search(/\./) - 1;
-    result = nStr * Math.pow(10, decimals) 
+    result = nStr * Math.pow(10, decimals)
     result /= Math.pow(10, 2 + decimals);
     return result;
 }
 
 // console.log(divideByHundred("5.6"));
 
+//------------------
 // FOR TESTING ONLY
 function strToKeyStroke(str) {
-    for (i = 0; i < str.length; i++) {
-        keyStroke(str[i]);
+    for (j = 0; j < str.length; j++) {
+        keyStroke(str[j]);
     }
 }
 
-strToKeyStroke("3*4");
+strToKeyStroke("4p+2p=1");
+// strToKeyStroke("45.2+67-68=67");
