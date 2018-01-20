@@ -115,6 +115,7 @@ function charOccurencesInString(aStr, anArrOfChars) {
     }
     return counter;
 }
+ 
 
 function divideByHundred(nStr) {
     var decimals = test.length - test.search(/\./) - 1;
