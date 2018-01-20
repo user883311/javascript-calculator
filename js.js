@@ -14,7 +14,7 @@ var operandColl = [
     { ".": "decimal point" }
 ]
 // var operatorArr = ["+", "-", "*", "/", "=", "+/-", "%"];
-var unaryOps = ["pm", "%"];
+var unaryOps = ["p", "%"];
 var binaryOps = ["+", "-", "*", "/"];
 var equalSign = "=";
 var f = "0";
