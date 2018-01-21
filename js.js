@@ -45,7 +45,7 @@ function keyStroke(input) {
     // => evaluate the formula without the last binary operator
     // => formula = result + new binary operator 
     if (charOccurencesInString(f.slice(1), binaryOps) > 1) {
-        result = eval(f.slice(0, f.length - 1));
+        result = evaluateFormula(f.slice(0, f.length - 1));
         f = result.toString() + f[f.length - 1];
         // lastNumberIsResultOfEqualOperation = true;
     }
@@ -54,7 +54,7 @@ function keyStroke(input) {
     // => evaluate the formula without the last character (the equal sign)
     // => formula = result 
     if (charOccurencesInString(f, binaryOps) == 1 && f[f.length - 1] == equalSign) {
-        result = eval(f.slice(0, f.length - 1));
+        result = evaluateFormula(f.slice(0, f.length - 1));
         f = result.toString();
         lastNumberIsResultOfEqualOperation = true;
     }
@@ -168,5 +168,5 @@ function strToKeyStroke(str) {
     }
 }
 
-// strToKeyStroke("5.+6%=");
+strToKeyStroke("45.2+45%=");
 // strToKeyStroke("00045.200*0045%=");
