@@ -7,6 +7,15 @@ var result;
 var lastNumberIsResultOfEqualOperation = false;
 
 function keyStroke(input) {
+    // if user presses "C", delete the last number only
+    // if formula is empty, reset it to "0"
+
+    // if user presses "AC" delete the entire formula
+    // and reset it to "0"
+    
+    
+    
+    
     // if last number in string is a NOT a result, 
     // THEN add last input character to the formula string
     // ELSE IF last number in string is a result AND
@@ -77,10 +86,9 @@ function keyStroke(input) {
 }
 
 function display(f) {
-    /*
-    Displays last number/result onto the display 
-    panel of the calculator. 
-    */
+    /* Displays last number/result onto the display 
+    panel of the calculator. */
+
     // regexp to find last number, with or without decinal point
     console.log("f = " + f);
     var d;
@@ -89,9 +97,14 @@ function display(f) {
     d = d.replace(/^(-?)0+/, "$10");
     // take out the unnecessary zeros
     d = d.replace(/^0+(\d)/, "$1");
+
+    // display in HTML
     console.log("display(f) = ", d);
+    document.getElementById("result").innerHTML = d;
+    
+
     // if last char is binary operator
-    // then toggle the operator button
+    // then toggle the operator button in HTML
     if (binaryOps.indexOf(d[d.length - 1]) != -1) {
         // toggle
     }
@@ -146,7 +159,7 @@ function evaluateFormula(f) {
         var result, elements, divisor = 1;
         elements = f.split(/\+|\-|\*|\//);
         var a = elements[0], b = elements[1];
-        while (/\./.test(a) || /\./.test(b)){
+        while (/\./.test(a) || /\./.test(b)) {
             a *= 10; b *= 10;
             divisor *= 10;
         }

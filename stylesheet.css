@@ -22,9 +22,6 @@
     background: rgb(194, 172, 172);
 }
 
-#result {
-    border-bottom: solid 1px black;
-}
 
 #keypad {
     display: grid;
