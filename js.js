@@ -24,8 +24,8 @@ function keyStroke(input) {
     console.log("formula now evaluated: <" + f + ">");
 
     // delete unnecessary zeros
-    f = f.replace(/(\W)0/,"$1") // if zero after an operator
-    f = f.replace(/^0+(\d)/,"$1"); // if zero is in the beginning of a number
+    f = f.replace(/(\W)0/, "$1") // if zero after an operator
+    f = f.replace(/^0+(\d)/, "$1"); // if zero is in the beginning of a number
 
     // if the 2 last characters include are binary operators
     // => remove the 2nd last binary operator from the string
@@ -33,12 +33,12 @@ function keyStroke(input) {
         f = f.slice(0, f.length - 1);
     }
 
-    
+
 
 
     // if decimal point followed by an operator
     // remove the decimal point
-    f = f.replace(/\.([+-/*%p])/g,"$1");
+    f = f.replace(/\.([+-/*%p])/g, "$1");
 
     // if the string includes 2 nos of binary operators (excluding the 
     // the first possible "-" sign), 
@@ -134,6 +134,32 @@ function divideLastNumberByHundred(f) {
 // console.log(divideLastNumberByHundred("3%"));
 // console.log(divideLastNumberByHundred("4+5%"));
 
+function evaluateFormula(f) {
+    /*
+    This function solves the problem of floating point arithmetic by
+    multiplying each member of a binary operation by ten, then 
+    dividing, to return an exact result; 
+    */
+    // if no decimal point in the formula, just return eval()
+    if (/\./.test(f) == false) { return eval(f) }
+    // if there are decimal points multiply each member by 10 
+    // until there are no decimal points anymore
+    // then divide by 10^number of times the operation was necessary
+    else {
+        var result, elements, divisor = 1;
+        elements = f.split(/\+|\-|\*|\//);
+        var a = elements[0], b = elements[1];
+        while (/\./.test(a) || /\./.test(b)){
+            a *= 10; b *= 10;
+            divisor *= 10;
+        }
+        result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+        result /= divisor;
+        return result;
+    }
+}
+// console.log(evaluateFormula("45.2+0.45"));
+
 //------------------
 // FOR TESTING ONLY
 function strToKeyStroke(str) {
@@ -143,4 +169,4 @@ function strToKeyStroke(str) {
 }
 
 // strToKeyStroke("5.+6%=");
-strToKeyStroke("00045.200+0045=");
+// strToKeyStroke("00045.200*0045%=");
