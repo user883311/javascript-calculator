@@ -22,6 +22,7 @@ var result;
 var lastNumberIsResultOfEqualOperation = false;
 
 function keyStroke(input) {
+    
     // if last number in string is a NOT a result, 
     // THEN add last input character to the formula string
 
@@ -37,11 +38,12 @@ function keyStroke(input) {
             lastNumberIsResultOfEqualOperation = false;
         }
     }
+    console.log("formula now evaluated: <" + f + ">");
 
     // if the first number starts with a "0"
     // then delete this first "0"
-    f = f.replace(/^00/g, "0");
-    f = f.replace(/0+([1-9]+\.?\d*)/g, "$1");
+    // f = f.replace(/0*(\.\d*)/, "0$1");
+    //f = f.replace(/0+([1-9]+\.?\d*)/g, "$1");
 
     // if the 2 last characters include are binary operators
     // => remove the 2nd last binary operator from the string
@@ -81,7 +83,7 @@ function keyStroke(input) {
     if (/%/.test(f)) {
         f = divideLastNumberByHundred(f);
     }
-    
+
 
     // update display on the display panel
     display(f);
@@ -94,15 +96,21 @@ function display(f) {
     panel of the calculator. 
     */
     // regexp to find last number, with or without decinal point
-
-    // if last char is operator
-    // then toggle the operator button
     console.log("f = " + f);
     var d;
     d = f.match(/-?\d+\.?\d*/g);
     d = d[d.length - 1];
     d = d.replace(/^(-?)0+/, "$10");
+    // take out the unnecessary zeros
+    d = d.replace(/^0+(\d)/,"$1");
     console.log("display(f) = ", d);
+    // if last char is binary operator
+    // then toggle the operator button
+    if (binaryOps.indexOf(d[d.length - 1]) != -1) {
+        // toggle
+
+    }
+
 }
 
 function charOccurencesInString(aStr, anArrOfChars) {
@@ -129,15 +137,7 @@ function divideByHundred(nStr) {
 // console.log(divideByHundred("5.6"));
 
 function divideLastNumberByHundred(f) {
-    // APPROACH 1: regex
-    /*if (/%/.test(f)) {
-       console.log("the str includes %");
-       console.log(f);
-       f = f.replace(f.match(/\d*\.?\d*%/)[0], divideByHundred(f.match(/\d*\.?\d*%/)[0].slice(0, this.length - 1)));
-       console.log(f);
-   } */
-
-    // APPROACH 2: just divide last number by 100 and eval the last number
+    // just divide last number by 100 and eval the last number
     var result, index;
     result = f.match(/\d*\.?\d*%/)[0];
     result = result.match(/\d*\.?\d*/)[0] / 100;
@@ -156,5 +156,5 @@ function strToKeyStroke(str) {
     }
 }
 
-strToKeyStroke("4+3%=");
+strToKeyStroke("4+003.4%=");
 // strToKeyStroke("45.2+67-68=67");
