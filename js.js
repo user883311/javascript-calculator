@@ -23,11 +23,22 @@ function keyStroke(input) {
     }
     console.log("formula now evaluated: <" + f + ">");
 
+    // delete unnecessary zeros
+    f = f.replace(/(\W)0/,"$1") // if zero after an operator
+    f = f.replace(/^0+(\d)/,"$1"); // if zero is in the beginning of a number
+
     // if the 2 last characters include are binary operators
     // => remove the 2nd last binary operator from the string
     if (binaryOps.indexOf(f[f.length - 1]) != -1 && binaryOps.indexOf(f[f.length - 2]) != -1) {
         f = f.slice(0, f.length - 1);
     }
+
+    
+
+
+    // if decimal point followed by an operator
+    // remove the decimal point
+    f = f.replace(/\.([+-/*%p])/g,"$1");
 
     // if the string includes 2 nos of binary operators (excluding the 
     // the first possible "-" sign), 
@@ -51,6 +62,7 @@ function keyStroke(input) {
     // if last number in string includes 2 decimal points 
     // => remove the last decimal point from the formula
     f = f.replace(/(\.\d*)\./, "$1");
+
 
     // if string includes "p" 
     // => apply unary operator to the last number in the formula string 
@@ -130,5 +142,5 @@ function strToKeyStroke(str) {
     }
 }
 
-strToKeyStroke("4+003.4%=89%");
-// strToKeyStroke("45.2+67-68=67");
+// strToKeyStroke("5.+6%=");
+strToKeyStroke("00045.200+0045=");
