@@ -1,19 +1,4 @@
 var operandArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-var operandColl = [
-    { 0: "digit" },
-    { 1: "digit" },
-    { 2: "digit" },
-    { 3: "digit" },
-    { 4: "digit" },
-    { 5: "digit" },
-    { 6: "digit" },
-    { 7: "digit" },
-    { 8: "digit" },
-    { 9: "digit" },
-    { 10: "digit" },
-    { ".": "decimal point" }
-]
-// var operatorArr = ["+", "-", "*", "/", "=", "+/-", "%"];
 var unaryOps = ["p", "%"];
 var binaryOps = ["+", "-", "*", "/"];
 var equalSign = "=";
@@ -22,10 +7,8 @@ var result;
 var lastNumberIsResultOfEqualOperation = false;
 
 function keyStroke(input) {
-    
     // if last number in string is a NOT a result, 
     // THEN add last input character to the formula string
-
     // ELSE IF last number in string is a result AND
     // last input character is a digit
     // then wipe off result from formula and start with
@@ -39,11 +22,6 @@ function keyStroke(input) {
         }
     }
     console.log("formula now evaluated: <" + f + ">");
-
-    // if the first number starts with a "0"
-    // then delete this first "0"
-    // f = f.replace(/0*(\.\d*)/, "0$1");
-    //f = f.replace(/0+([1-9]+\.?\d*)/g, "$1");
 
     // if the 2 last characters include are binary operators
     // => remove the 2nd last binary operator from the string
@@ -84,7 +62,6 @@ function keyStroke(input) {
         f = divideLastNumberByHundred(f);
     }
 
-
     // update display on the display panel
     display(f);
     console.log(lastNumberIsResultOfEqualOperation);
@@ -102,15 +79,13 @@ function display(f) {
     d = d[d.length - 1];
     d = d.replace(/^(-?)0+/, "$10");
     // take out the unnecessary zeros
-    d = d.replace(/^0+(\d)/,"$1");
+    d = d.replace(/^0+(\d)/, "$1");
     console.log("display(f) = ", d);
     // if last char is binary operator
     // then toggle the operator button
     if (binaryOps.indexOf(d[d.length - 1]) != -1) {
         // toggle
-
     }
-
 }
 
 function charOccurencesInString(aStr, anArrOfChars) {
@@ -126,7 +101,6 @@ function charOccurencesInString(aStr, anArrOfChars) {
     }
     return counter;
 }
-
 
 function divideByHundred(nStr) {
     var decimals = nStr.length - nStr.search(/\./) - 1;
@@ -156,5 +130,5 @@ function strToKeyStroke(str) {
     }
 }
 
-strToKeyStroke("4+003.4%=");
+strToKeyStroke("4+003.4%=89%");
 // strToKeyStroke("45.2+67-68=67");
