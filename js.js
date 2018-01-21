@@ -33,9 +33,6 @@ function keyStroke(input) {
         f = f.slice(0, f.length - 1);
     }
 
-
-
-
     // if decimal point followed by an operator
     // remove the decimal point
     f = f.replace(/\.([+-/*%p])/g, "$1");
@@ -168,5 +165,5 @@ function strToKeyStroke(str) {
     }
 }
 
-strToKeyStroke("45.2+45%=");
+// strToKeyStroke("45.2+45%=");
 // strToKeyStroke("00045.200*0045%=");

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -68,7 +69,7 @@
         }
     </style>
     <title>
-        Javascript Calculator 1
+        Javascript Calculator
     </title>
 </head>
 
@@ -97,80 +98,11 @@
             <a class="functionButton" id="minusBtn" onclick="keyStroke('-')">-</a>
             <a class="equalButton" id="equalBtn" onclick="keyStroke('=')">=</a>
             <a class="functionButton" id="plusBtn" onclick="keyStroke('+')">+</a>
+            <a class="functionButton" id="plusMinusBtn" onclick="keyStroke('p')">+/-</a>
+            <a class="functionButton" id="perCentBtn" onclick="keyStroke('%')">%</a>
         </div>
     </div>
-    <script>
-        var expArr = ["", "", ""] // [aStr, opsStr, bStr]
-        var operandArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-        var operandColl = [
-            { 0: "digit" },
-            { 1: "digit" },
-            { 2: "digit" },
-            { 3: "digit" },
-            { 4: "digit" },
-            { 5: "digit" },
-            { 6: "digit" },
-            { 7: "digit" },
-            { 8: "digit" },
-            { 9: "digit" },
-            { 10: "digit" },
-            { ".": "decimal point" }
-        ]
-        var operatorArr = ["+", "-", "*", "/", "="];
-
-        var mode = 0;
-        // mode = 0 : keying in 1st operand
-        // mode = 1 : 1st operand keyed in / operator keyed in
-        // mode = 2 : keying in 2nd operand
-
-        var aStr = opStr = bStr = "";
-        function keyStroke(inputStr) {
-            // inputStr: string
-            if (mode == 0 && inputStr == "=") {
-                expArr = [aStr, inputStr, undefined];
-                aStr = evaluateExpression(expArr);
-            }
-            else if (mode == 0 && operandArr.indexOf(inputStr) != -1) {
-                aStr += inputStr;
-            }
-            else if (mode == 0 && operatorArr.indexOf(inputStr) != -1) {
-                opStr = inputStr;
-                mode = 1;
-            }
-            else if (mode == 1 && operandArr.indexOf(inputStr) != -1) {
-                mode = 2;
-                bStr += inputStr;
-            }
-            else if (mode == 1 && operatorArr.indexOf(inputStr) != -1) {
-                opStr = inputStr;
-            }
-            else if (mode == 2 && operandArr.indexOf(inputStr) != -1) {
-                bStr += inputStr;
-            }
-            else if (mode == 2 && operatorArr.indexOf(inputStr) != -1) {
-                expArr = [aStr, opStr, bStr];
-                aStr = evaluateExpression(expArr);
-                opStr = inputStr;
-                bStr = "";
-                mode = 1;
-            }
-            console.log("mode", mode, "inputStr", inputStr, [aStr, opStr, bStr]);
-        }
-
-        function evaluateExpression(expArr) {
-            console.log("calling evaluateExpression(" + expArr + ")");
-            let a = expArr[0], op = expArr[1]; b = expArr[2];
-            // this function returns the result of the expression evaluation
-            console.log(a, op, b);
-            if (op == "+") { return a + b };
-            if (op == "-") { return a - b };
-            if (op == "*") { return a * b };
-            if (op == "/") { return a / b };
-            if (op == "=") { return a };
-            return "error: function unknown";
-        }
-
-    </script>
+    <script type="text/javascript" src="js.js"></script>
 </body>
 <footer>
 

@@ -1,7 +1,7 @@
 # Javascript Calculator
 ## a freecodecamp project
 
-Objective: Build a CodePen.io app that is functionally similar to this: https://codepen.io/FreeCodeCamp/full/rLJZrA/.
+Objective: Build an app that is functionally similar to this: https://codepen.io/FreeCodeCamp/full/rLJZrA/.
 
 User Story: I can add, subtract, multiply and divide two numbers.
 User Story: I can clear the input field with a clear button.
