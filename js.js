@@ -78,7 +78,10 @@ function keyStroke(input) {
 
     // if string includes %
     // => apply unary operator to the last number in the formula string 
-    // f = f.replace(f.match(/\d*\.?\d*%/), divideByHundred(f.match(/\d*\.?\d*%/)[0].slice(0, this.length - 1)));
+    if (/%/.test(f)) {
+        f = divideLastNumberByHundred(f);
+    }
+    
 
     // update display on the display panel
     display(f);
@@ -94,7 +97,7 @@ function display(f) {
 
     // if last char is operator
     // then toggle the operator button
-    console.log("f = "+f);
+    console.log("f = " + f);
     var d;
     d = f.match(/-?\d+\.?\d*/g);
     d = d[d.length - 1];
@@ -115,16 +118,35 @@ function charOccurencesInString(aStr, anArrOfChars) {
     }
     return counter;
 }
- 
+
 
 function divideByHundred(nStr) {
-    var decimals = test.length - test.search(/\./) - 1;
+    var decimals = nStr.length - nStr.search(/\./) - 1;
     result = nStr * Math.pow(10, decimals)
     result /= Math.pow(10, 2 + decimals);
     return result;
 }
-
 // console.log(divideByHundred("5.6"));
+
+function divideLastNumberByHundred(f) {
+    // APPROACH 1: regex
+    /*if (/%/.test(f)) {
+       console.log("the str includes %");
+       console.log(f);
+       f = f.replace(f.match(/\d*\.?\d*%/)[0], divideByHundred(f.match(/\d*\.?\d*%/)[0].slice(0, this.length - 1)));
+       console.log(f);
+   } */
+
+    // APPROACH 2: just divide last number by 100 and eval the last number
+    var result, index;
+    result = f.match(/\d*\.?\d*%/)[0];
+    result = result.match(/\d*\.?\d*/)[0] / 100;
+    result = result.toString();
+    index = f.match(/(\d*\.?\d*)%/).index;
+    return f.slice(0, index) + result;
+}
+// console.log(divideLastNumberByHundred("3%"));
+// console.log(divideLastNumberByHundred("4+5%"));
 
 //------------------
 // FOR TESTING ONLY
@@ -134,5 +156,5 @@ function strToKeyStroke(str) {
     }
 }
 
-strToKeyStroke("4p+2p=1");
+strToKeyStroke("4+3%=");
 // strToKeyStroke("45.2+67-68=67");
