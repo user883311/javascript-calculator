@@ -7,15 +7,6 @@ var result;
 var lastNumberIsResultOfEqualOperation = false;
 
 function keyStroke(input) {
-    // if user presses "C", delete the last number only
-    // if formula is empty, reset it to "0"
-
-    // if user presses "AC" delete the entire formula
-    // and reset it to "0"
-    
-    
-    
-    
     // if last number in string is a NOT a result, 
     // THEN add last input character to the formula string
     // ELSE IF last number in string is a result AND
@@ -32,8 +23,19 @@ function keyStroke(input) {
     }
     console.log("formula now evaluated: <" + f + ">");
 
+    // if user presses "C", delete the last number only
+    // if formula is empty, reset it to "0"
+    if (input == "C") {
+
+    }
+    // if user presses "AC" delete the entire formula
+    // and reset it to "0"
+    if (input == "AC") {
+        f = "0";
+    }
+
     // delete unnecessary zeros
-    f = f.replace(/(\W)0/, "$1") // if zero after an operator
+    f = f.replace(/(\+|-|\*|\/)0/, "$1") // if zero after a binary operator
     f = f.replace(/^0+(\d)/, "$1"); // if zero is in the beginning of a number
 
     // if the 2 last characters include are binary operators
@@ -78,6 +80,7 @@ function keyStroke(input) {
     // => apply unary operator to the last number in the formula string 
     if (/%/.test(f)) {
         f = divideLastNumberByHundred(f);
+        lastNumberIsResultOfEqualOperation = false;
     }
 
     // update display on the display panel
@@ -92,8 +95,16 @@ function display(f) {
     // regexp to find last number, with or without decinal point
     console.log("f = " + f);
     var d;
-    d = f.match(/-?\d+\.?\d*/g);
+    // get an array of numbers (positive or negative)
+    // at the beginning of expression or immediately
+    // after an operator. 
+    d = f.match(/(\+|-|\*|\/)-?\d+\.?\d*/g) || f.match(/^-?\d+\.?\d*/g);
     d = d[d.length - 1];
+    // take out the operator in front, if any
+    if(binaryOps.indexOf(d[0]) != -1 ){
+        d= d.slice(1);
+    }
+    // take out unecessary zeros
     d = d.replace(/^(-?)0+/, "$10");
     // take out the unnecessary zeros
     d = d.replace(/^0+(\d)/, "$1");
@@ -101,7 +112,7 @@ function display(f) {
     // display in HTML
     console.log("display(f) = ", d);
     document.getElementById("result").innerHTML = d;
-    
+
 
     // if last char is binary operator
     // then toggle the operator button in HTML
