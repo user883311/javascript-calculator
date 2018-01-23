@@ -100,10 +100,12 @@ function display(f) {
     // after an operator. 
     d = f.match(/(\+|-|\*|\/)-?\d+\.?\d*/g) || f.match(/^-?\d+\.?\d*/g);
     d = d[d.length - 1];
+    console.log(d);
     // take out the operator in front, if any
-    if(binaryOps.indexOf(d[0]) != -1 ){
-        d= d.slice(1);
+    if (binaryOps.indexOf(d[0]) != -1) {
+        d = d.slice(1);
     }
+    console.log(d);
     // take out unecessary zeros
     d = d.replace(/^(-?)0+/, "$10");
     // take out the unnecessary zeros
@@ -111,8 +113,7 @@ function display(f) {
 
     // display in HTML
     console.log("display(f) = ", d);
-    document.getElementById("result").innerHTML = d;
-
+    // document.getElementById("result").innerHTML = d;
 
     // if last char is binary operator
     // then toggle the operator button in HTML
@@ -162,6 +163,7 @@ function evaluateFormula(f) {
     dividing, to return an exact result; 
     */
     // if no decimal point in the formula, just return eval()
+    console.log("f = " + f);
     if (/\./.test(f) == false) { return eval(f) }
     // if there are decimal points multiply each member by 10 
     // until there are no decimal points anymore
@@ -170,12 +172,37 @@ function evaluateFormula(f) {
         var result, elements, divisor = 1;
         elements = f.split(/\+|\-|\*|\//);
         var a = elements[0], b = elements[1];
-        while (/\./.test(a) || /\./.test(b)) {
-            a *= 10; b *= 10;
-            divisor *= 10;
+
+        if (/(\+|-)/.test(f)) {
+            while (/\./.test(a) || /\./.test(b)) {
+                a *= 10; b *= 10;
+                divisor *= 10;
+                console.log(a, b, divisor);
+            }
+            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+            result /= divisor;
         }
-        result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
-        result /= divisor;
+        if (/\*/.test(f)) {
+            let power = 0;
+            while (/\./.test(a) || /\./.test(b)) {
+                a *= 10; b *= 10;
+                power ++;
+                console.log(a, b, divisor);
+            }
+            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+            divisor *= Math.pow(10, 2 * power);
+            result /= divisor;
+        }
+        if (/\//.test(f)) {
+            while (/\./.test(a) || /\./.test(b)) {
+                a *= 10; b *= 10;
+                console.log(a, b, divisor);
+            }
+            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+        }
+
+
+
         return result;
     }
 }
@@ -189,5 +216,5 @@ function strToKeyStroke(str) {
     }
 }
 
-// strToKeyStroke("45.2+45%=");
+strToKeyStroke("3-4="); 
 // strToKeyStroke("00045.200*0045%=");
