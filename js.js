@@ -67,30 +67,25 @@ function keyStroke(input) {
         lastNumberIsResultOfEqualOperation = true;
     }
 
-    // if last number in string includes 2 decimal points 
-    // => remove the last decimal point from the formula
+    // if a number includes 2 decimal points , remove the last one
     f = f.replace(/(\.\d*)\./, "$1");
 
-
-    // if string includes "p" 
-    // => apply unary operator to the last number in the formula string 
+    // apply minus operation to a number followed by "p"
     f = f.replace(/(\d*?\.?\d*?)p/, "-$1"); // for "+/-"
 
-    // if string includes %
-    // => apply unary operator to the last number in the formula string 
+    // if there is a "%""
     if (/%/.test(f)) {
         f = divideLastNumberByHundred(f);
         lastNumberIsResultOfEqualOperation = false;
     }
 
-    // update display on the display panel
+    // Finally, update display panel
     display(f);
     console.log(lastNumberIsResultOfEqualOperation);
 }
 
 function display(f) {
-    /* Displays last number/result onto the display 
-    panel of the calculator. */
+    /* Displays last number/result onto the display panel of the calculator. */
     let result;
     let r1 = /^-?\d*\.?\d*$/g;
     let r2 = /--\d*\.?\d*$/g;
