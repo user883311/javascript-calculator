@@ -34,9 +34,9 @@ function keyStroke(input) {
         f = "0";
     }
 
-    // delete unnecessary zeros
-    f = f.replace(/(\+|-|\*|\/)0/, "$1") // if zero after a binary operator
-    f = f.replace(/^0+(\d)/, "$1"); // if zero is in the beginning of a number
+    // delete unnecessary zeros ( NECESSARY??? )
+    //f = f.replace(/(\+|-|\*|\/)0/, "$1") // if zero after a binary operator
+    f = f.replace(/^-?0+(\d)/, "$1"); // if zero is in the beginning of a number
 
     // if the 2 last characters include are binary operators
     // => remove the 2nd last binary operator from the string
@@ -91,33 +91,22 @@ function keyStroke(input) {
 function display(f) {
     /* Displays last number/result onto the display 
     panel of the calculator. */
+    let result;
+    let r1 = /^-?\d*\.?\d*$/g;
+    let r2 = /--\d*\.?\d*$/g;
+    let r3 = /(\+|-|\*|\/)-\d*\.?\d*$/g;
+    let r4 = /\d*\.?\d*$/g;
+    result = f.match(r1) || f.match(r2) || f.match(r3) || f.match(r4);
+    result = result[0];
+    if (/^--/.test(result) || /^0[1-9]/.test(result)) { result = result.slice(1) }
+    if (/^-0[^.]/.test(result)) { result = result[0] + result.slice(2) }
 
-    // regexp to find last number, with or without decinal point
-    console.log("f = " + f);
-    var d;
-    // get an array of numbers (positive or negative)
-    // at the beginning of expression or immediately
-    // after an operator. 
-    d = f.match(/(\+|-|\*|\/)-?\d+\.?\d*/g) || f.match(/^-?\d+\.?\d*/g);
-    d = d[d.length - 1];
-    console.log(d);
-    // take out the operator in front, if any
-    if (binaryOps.indexOf(d[0]) != -1) {
-        d = d.slice(1);
-    }
-    console.log(d);
-    // take out unecessary zeros
-    d = d.replace(/^(-?)0+/, "$10");
-    // take out the unnecessary zeros
-    d = d.replace(/^0+(\d)/, "$1");
-
-    // display in HTML
-    console.log("display(f) = ", d);
-    // document.getElementById("result").innerHTML = d;
+    console.log("result",result);
+    //document.getElementById("result").innerHTML = result;
 
     // if last char is binary operator
     // then toggle the operator button in HTML
-    if (binaryOps.indexOf(d[d.length - 1]) != -1) {
+    if (binaryOps.indexOf(result[result.length - 1]) != -1) {
         // toggle
     }
 }
@@ -186,7 +175,7 @@ function evaluateFormula(f) {
             let power = 0;
             while (/\./.test(a) || /\./.test(b)) {
                 a *= 10; b *= 10;
-                power ++;
+                power++;
                 console.log(a, b, divisor);
             }
             result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
@@ -216,5 +205,5 @@ function strToKeyStroke(str) {
     }
 }
 
-strToKeyStroke("3-4="); 
+strToKeyStroke("45+3.02=1");
 // strToKeyStroke("00045.200*0045%=");
