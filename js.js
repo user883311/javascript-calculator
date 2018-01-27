@@ -7,32 +7,22 @@ var result;
 var lastNumberIsResultOfEqualOperation = false;
 
 function keyStroke(input) {
-    // if last number in string is a NOT a result, 
-    // THEN add last input character to the formula string
-    // ELSE IF last number in string is a result AND
-    // last input character is a digit
-    // then wipe off result from formula and start with
-    // the new number
+    console.log("-- Calling keyStroke(" + input + ")");
     f += input;
-    if (lastNumberIsResultOfEqualOperation) {
-        if (operandArr.indexOf(input) != -1) {
-            f = input;
-            // reset lastNumberIsResultOfEqualOperation
-            lastNumberIsResultOfEqualOperation = false;
-        }
+    // if last element in string is a number && result
+    // then only keep it in the string
+    if (lastNumberIsResultOfEqualOperation && operandArr.indexOf(input) != -1) {
+        f = input;
+        lastNumberIsResultOfEqualOperation = false;// reset flag
     }
-    console.log("formula now evaluated: <" + f + ">");
+    console.log("The formula now evaluated is: " + f);
 
     // if user presses "C", delete the last number only
     // if formula is empty, reset it to "0"
-    if (input == "C") {
-
-    }
+    if (input == "C") { }
     // if user presses "AC" delete the entire formula
     // and reset it to "0"
-    if (input == "AC") {
-        f = "0";
-    }
+    if (input == "AC") { f = "0"; }
 
     // delete unnecessary zeros ( NECESSARY??? )
     //f = f.replace(/(\+|-|\*|\/)0/, "$1") // if zero after a binary operator
@@ -85,6 +75,7 @@ function keyStroke(input) {
 }
 
 function display(f) {
+    console.log("Calling display(" + f + ")");
     /* Displays last number/result onto the display panel of the calculator. */
     let result;
     let r1 = /^-?\d*\.?\d*$/g;
@@ -96,7 +87,7 @@ function display(f) {
     if (/^--/.test(result) || /^0[1-9]/.test(result)) { result = result.slice(1) }
     if (/^-0[^.]/.test(result)) { result = result[0] + result.slice(2) }
 
-    console.log("result",result);
+    console.log("It returns", result);
     //document.getElementById("result").innerHTML = result;
 
     // if last char is binary operator
@@ -147,7 +138,7 @@ function evaluateFormula(f) {
     dividing, to return an exact result; 
     */
     // if no decimal point in the formula, just return eval()
-    console.log("f = " + f);
+    console.log("Calling evaluateFormula(" + f + ")");
     if (/\./.test(f) == false) { return eval(f) }
     // if there are decimal points multiply each member by 10 
     // until there are no decimal points anymore
@@ -156,7 +147,7 @@ function evaluateFormula(f) {
         var result, elements, divisor = 1;
         elements = f.split(/\+|\-|\*|\//);
         var a = elements[0], b = elements[1];
-
+        console.log(a,b);
         if (/(\+|-)/.test(f)) {
             while (/\./.test(a) || /\./.test(b)) {
                 a *= 10; b *= 10;
@@ -190,15 +181,14 @@ function evaluateFormula(f) {
         return result;
     }
 }
-// console.log(evaluateFormula("45.2+0.45"));
+console.log(evaluateFormula("45+-3.02"));
 
 //------------------
 // FOR TESTING ONLY
 function strToKeyStroke(str) {
-    for (j = 0; j < str.length; j++) {
-        keyStroke(str[j]);
-    }
+    console.log("Calling strToKeyStroke(" + str + ")");
+    for (j = 0; j < str.length; j++) { keyStroke(str[j]); }
 }
 
-strToKeyStroke("45+3.02=1");
+// strToKeyStroke("45+3.02p=1");
 // strToKeyStroke("00045.200*0045%=");
