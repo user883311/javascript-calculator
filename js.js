@@ -138,50 +138,62 @@ function evaluateFormula(f) {
     dividing, to return an exact result; 
     */
     // if no decimal point in the formula, just return eval()
+    console.log("---------");
     console.log("Calling evaluateFormula(" + f + ")");
     if (/\./.test(f) == false) { return eval(f) }
     // if there are decimal points multiply each member by 10 
     // until there are no decimal points anymore
     // then divide by 10^number of times the operation was necessary
     else {
-        var result, elements, divisor = 1;
-        elements = f.split(/\+|\-|\*|\//);
-        var a = elements[0], b = elements[1];
-        console.log(a,b);
+        let result, elements, op, divisor = 1;
+        // elements = f.split(/\+-|\--|\*-|\/-|\+|\-|\*|\//);
+        // elements = f.split(/[*/]/) || f.split(/\+-|--/) || f.split(/\+|-/);
+
+        if (/\*|\//.test(f)) { op = f.match(/\*|\//); elements = f.split(/[*/]/) }
+        else if (/\+-|--/.test(f)) { op = f.match(/\+-|--/)[0].slice(0,1); elements = f.split(/\+-|--/) }
+        else if (/\+|-/.test(f)) { op = f.match(/\+|-/); elements = f.split(/\+|-/) };
+
+        let a = elements[0], b = elements[1];
+        console.log("elements =", elements);
+        console.log("a =", a, ", b =", b, ", op=", op);
+
+        if (/\*/.test(f)) {
+            let power = 0;
+            while (/\./.test(a) || /\./.test(b)) {
+                a *= 10; b *= 10;
+                divisor = divisor * 100;
+                console.log(a, b, divisor);
+            }
+            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+            result /= divisor;
+        }
+        if (/\//.test(f)) {
+            while (/\./.test(a) || /\./.test(b)) {
+                a *= 10; b *= 10;
+                // console.log(a, b, divisor);
+            }
+            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+        }
         if (/(\+|-)/.test(f)) {
             while (/\./.test(a) || /\./.test(b)) {
                 a *= 10; b *= 10;
                 divisor *= 10;
                 console.log(a, b, divisor);
             }
-            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
+            result = eval(a.toString() + op + b.toString());
             result /= divisor;
         }
-        if (/\*/.test(f)) {
-            let power = 0;
-            while (/\./.test(a) || /\./.test(b)) {
-                a *= 10; b *= 10;
-                power++;
-                console.log(a, b, divisor);
-            }
-            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
-            divisor *= Math.pow(10, 2 * power);
-            result /= divisor;
-        }
-        if (/\//.test(f)) {
-            while (/\./.test(a) || /\./.test(b)) {
-                a *= 10; b *= 10;
-                console.log(a, b, divisor);
-            }
-            result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
-        }
-
-
-
         return result;
     }
 }
-console.log(evaluateFormula("45+-3.02"));
+// console.log(evaluateFormula("45+3.02")); // 48.02
+// console.log(evaluateFormula("45-3.02"));
+// console.log(evaluateFormula("45*3.02"));
+// console.log(evaluateFormula("45/3.02"));
+// console.log(evaluateFormula("45+-3.02"));
+// console.log(evaluateFormula("45--3.02")); // 48.02
+// console.log(evaluateFormula("45*-3.02"));
+// console.log(evaluateFormula("45/-3.02"));
 
 //------------------
 // FOR TESTING ONLY
@@ -190,5 +202,12 @@ function strToKeyStroke(str) {
     for (j = 0; j < str.length; j++) { keyStroke(str[j]); }
 }
 
+// strToKeyStroke("45+3.0p=1");
+// strToKeyStroke("45-3.02p=1");
+// strToKeyStroke("45*3.02p=1");
+// strToKeyStroke("45+3.02%=1");
+// strToKeyStroke("45+3.02p=1");
+// strToKeyStroke("45+3.02p=1");
+// strToKeyStroke("45+3.02p=1");
 // strToKeyStroke("45+3.02p=1");
 // strToKeyStroke("00045.200*0045%=");
