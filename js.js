@@ -13,8 +13,8 @@ function keyStroke(input) {
     // then only keep it in the string
     if (lastNumberIsResultOfEqualOperation && operandArr.indexOf(input) != -1) {
         f = input;
-        lastNumberIsResultOfEqualOperation = false;// reset flag
     }
+    lastNumberIsResultOfEqualOperation = false;// reset flag
     console.log("The formula now evaluated is: " + f);
 
     // if user presses "C", delete the last number only
@@ -87,8 +87,8 @@ function display(f) {
     if (/^--/.test(result) || /^0[1-9]/.test(result)) { result = result.slice(1) }
     if (/^-0[^.]/.test(result)) { result = result[0] + result.slice(2) }
 
-    console.log("It returns", result);
-    //document.getElementById("result").innerHTML = result;
+    console.log("display() returns", result);
+    document.getElementById("result").innerHTML = result;
 
     // if last char is binary operator
     // then toggle the operator button in HTML
@@ -150,7 +150,7 @@ function evaluateFormula(f) {
         // elements = f.split(/[*/]/) || f.split(/\+-|--/) || f.split(/\+|-/);
 
         if (/\*|\//.test(f)) { op = f.match(/\*|\//); elements = f.split(/[*/]/) }
-        else if (/\+-|--/.test(f)) { op = f.match(/\+-|--/)[0].slice(0,1); elements = f.split(/\+-|--/) }
+        else if (/\+-|--/.test(f)) { op = f.match(/\+-|--/)[0].slice(0, 1); elements = f.split(/\+-|--/) }
         else if (/\+|-/.test(f)) { op = f.match(/\+|-/); elements = f.split(/\+|-/) };
 
         let a = elements[0], b = elements[1];
