@@ -78,25 +78,41 @@ function keyStroke(input) {
 function display(f) {
     /* Displays last number/result onto the display panel of the calculator. */
     console.log("Calling display(" + f + ")");
-    let result;
-    let r1 = /^-?\d*\.?\d*$/g;
-    let r2 = /--\d*\.?\d*$/g;
-    let r3 = /(\+|-|\*|\/)-\d*\.?\d*$/g;
-    let r4 = /\d*\.?\d*$/g;
-    result = f.match(r1) || f.match(r2) || f.match(r3) || f.match(r4);
-    result = result[0];
-    if (/^--/.test(result) || /^0[1-9]/.test(result)) { result = result.slice(1) }
-    if (/^-0[^.]/.test(result)) { result = result[0] + result.slice(2) }
+    let lastEl, op, numberDisplayed;
+    let r1 = /^-?\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    let r2 = /--\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    let r3 = /\d-\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    // let r3 = /(\+|-|\*|\/)-\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    let r4 = /\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    lastEl = f.match(r1) || f.match(r2) || f.match(r3) || f.match(r4);
+    lastEl = lastEl[0];
+    console.log("lastEl =", lastEl);
+    if (/^--/.test(lastEl) || /^0[1-9]/.test(lastEl)) { lastEl = lastEl.slice(1) }
+    if (/^-0[^.]/.test(lastEl)) { lastEl = lastEl[0] + lastEl.slice(2) }
+    if (/-/.test(lastEl[1])) { lastEl = lastEl.slice(2) }
 
-    console.log("display() returns", result);
-    document.getElementById("result").innerHTML = result;
+    // take out the last non numeric characters and/or last decimal point
+    numberDisplayed = lastEl;
+    while (["+", "-", "*", "/", "="].indexOf(numberDisplayed[numberDisplayed.length - 1]) != -1) {
+        numberDisplayed = numberDisplayed.slice(0, numberDisplayed.length - 1);
+    }
+
+    console.log("display(" + f + ") returns", numberDisplayed);
+    document.getElementById("result").innerHTML = numberDisplayed;
 
     // if last char is binary operator
     // then toggle the operator button in HTML
-    if (binaryOps.indexOf(result[result.length - 1]) != -1) {
+    if (binaryOps.indexOf(lastEl[lastEl.length - 1]) != -1) {
         // toggle
     }
 }
+// display("50--2");
+// display("-7+-2.02=");
+// display("-3+");
+// display("-8+0.09");
+// display("-8+1=");
+// display("3*-4\-0.1=");
+
 
 function charOccurencesInString(aStr, anArrOfChars) {
     /*
@@ -161,7 +177,7 @@ function evaluateFormula(f) {
         if (/\*/.test(f)) {
             let power = 0;
             while (/\./.test(a) || /\./.test(b)) {
-                a *= 10; b *= 10;
+                a = multiplyByTen(a); b = multiplyByTen(b);
                 divisor = divisor * 100;
                 console.log(a, b, divisor);
             }
@@ -170,14 +186,14 @@ function evaluateFormula(f) {
         }
         if (/\//.test(f)) {
             while (/\./.test(a) || /\./.test(b)) {
-                a *= 10; b *= 10;
+                a = multiplyByTen(a); b = multiplyByTen(b);
                 // console.log(a, b, divisor);
             }
             result = eval(a.toString() + f.match(/\+|\-|\*|\//) + b.toString());
         }
         if (/(\+|-)/.test(f)) {
             while (/\./.test(a) || /\./.test(b)) {
-                a *= 10; b *= 10;
+                a = multiplyByTen(a); b = multiplyByTen(b);
                 divisor *= 10;
                 console.log(a, b, divisor);
             }
@@ -196,13 +212,29 @@ function evaluateFormula(f) {
 // console.log(evaluateFormula("45*-3.02"));
 // console.log(evaluateFormula("45/-3.02"));
 
+function multiplyByTen(str) {
+    if (/\./.test(str) == false) { return str * 10 }
+    if (/\.$/.test(str)) { return str * 10 }
+    else {
+        let decPos = str.indexOf(".");
+        let decimals = str.length - decPos - 1;
+        let result;
+        result = str.slice(0, decPos) || "";
+        result += str.slice(decPos + 1, decPos + 2);
+        result += ".";
+        result += str.slice(decPos + 2);
+        return result;
+    }
+}
+// console.log(multiplyByTen("101."));
+// console.log(multiplyByTen("40.23"));
+
 //------------------
 // FOR TESTING ONLY
 function strToKeyStroke(str) {
     console.log("Calling strToKeyStroke(" + str + ")");
     for (j = 0; j < str.length; j++) { keyStroke(str[j]); }
 }
-
 // strToKeyStroke("45+3.0p=1");
 // strToKeyStroke("45-3.02p=1");
 // strToKeyStroke("45*3.02p=1");
