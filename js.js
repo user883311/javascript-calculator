@@ -83,19 +83,28 @@ function keyStroke(input) {
 
 function display(f) {
     /* Displays last number/result onto the display panel of the calculator. */
-    console.log("Calling display(" + f + ")");
+    // console.log("Calling display(" + f + ")");
     let lastEl, op, numberDisplayed;
-    let r1 = /^-?\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
-    let r2 = /--\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
-    let r3 = /\d-\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
-    // let r3 = /(\+|-|\*|\/)-\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
-    let r4 = /\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
-    lastEl = f.match(r1) || f.match(r2) || f.match(r3) || f.match(r4);
+    // let r1 = /^-?\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    // let r2 = /--\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    // let r3 = /\d-\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    // let r4 = /\d*\.?\d*(\+|\-|\*|\/|\+-|\--|\*-|\/-|=)?$/g;
+    // lastEl = f.match(r1) || f.match(r2) || f.match(r3) || f.match(r4);
+    // lastEl = lastEl[0];
+    let r = /.-?\d*\.?\d*\D?$/;
+    lastEl = f.match(r);
     lastEl = lastEl[0];
-    console.log("lastEl =", lastEl);
-    if (/^--/.test(lastEl) || /^0[1-9]/.test(lastEl)) { lastEl = lastEl.slice(1) }
-    if (/^-0[^.]/.test(lastEl)) { lastEl = lastEl[0] + lastEl.slice(2) }
-    if (/-/.test(lastEl[1])) { lastEl = lastEl.slice(2) }
+    lastEl = lastEl.replace(/^-(-)/, "$1");
+    lastEl = lastEl.replace(/^\+(-)/, "$1");
+    lastEl = lastEl.replace(/^\d-/, "");
+    lastEl = lastEl.replace(/^\+/, "");
+    lastEl = lastEl.replace(/^(\+|\*|\/)/, "");
+
+
+    // console.log("lastEl =", lastEl);
+    // if (/^--/.test(lastEl) || /^0[1-9]/.test(lastEl)) { lastEl = lastEl.slice(1) }
+    // if (/^-0[^.]/.test(lastEl)) { lastEl = lastEl[0] + lastEl.slice(2) }
+    // if (/-/.test(lastEl[1])) { lastEl = lastEl.slice(2) }
 
     // take out the last non numeric characters and/or last decimal point
     numberDisplayed = lastEl;
@@ -112,12 +121,16 @@ function display(f) {
         // toggle
     }
 }
-// display("50--2");
-// display("-7+-2.02=");
-// display("-3+");
-// display("-8+0.09");
-// display("-8+1=");
-// display("3*-4\-0.1=");
+// display("-35-");
+// display("5*-4");
+// display("35");
+// display("-5.01");
+// display("4+5");
+// display("-1-5");
+// display("-4+-5");
+// display("-4--5");
+// display("-4.01+-5.01");
+
 
 
 function charOccurencesInString(aStr, anArrOfChars) {
