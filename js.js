@@ -69,6 +69,8 @@ function keyStroke(input) {
 
     // apply minus operation to a number followed by "p"
     f = f.replace(/(\d*?\.?\d*?)p/, "-$1"); // for "+/-"
+    // What if user presses "+/-" several times ? 
+    
 
     // if there is a "%""
     if (/%/.test(f)) {
@@ -100,6 +102,10 @@ function display(f) {
         numberDisplayed = numberDisplayed.slice(0, numberDisplayed.length - 1);
     }
 
+    // if too many digits, express result in powers of 10.
+
+
+    // display
     console.log("display(" + f + ") returns", numberDisplayed);
     document.getElementById("result").innerHTML = numberDisplayed;
 
