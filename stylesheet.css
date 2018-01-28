@@ -1,62 +1,61 @@
-.body {
-
+body {
+    font-family: Arial, Helvetica, sans-serif;  
+    background: rgb(80, 74, 170);
+}
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 #calculator {
-    justify-content: center;
-    border-radius: 5px;
-    box-shadow: 2px 3px rgb(187, 186, 186);
+    justify-self: center;
+    background: black;
     display: grid;
-    border: 2px solid green;
-    width: 220px;
-    ;
+    grid-column: 2;
+    grid-template-columns: repeat(1, 1fr);
 }
 
-#displayPanel {
+#result {
+    text-align: right;
+    font-size: xx-large;
     height: 60px;
     width: 200px;
-    margin-top: 10px;
-    border-radius: 5px;
-    box-shadow: 2px 3px rgb(187, 186, 186);
-    display: grid;
-    grid-template-rows: 2fr 1fr;
-    border: 2px solid black;
-    background: rgb(194, 172, 172);
+    border: 1px solid rgb(142, 142, 142);
+    background: rgb(41, 41, 41);
+    color: rgb(242,255,255);
+    vertical-align: middle;
+    line-height: 60px;
 }
-
 
 #keypad {
     display: grid;
-    align-items: center;
-    justify-items: center;
     grid-template-columns: repeat(4, 50px);
     grid-template-rows: repeat(6, 50px);
+    height: 250px;
 }
 
-.functionButton,
-.equalButton {
-    display: block;
-    border: 2px solid black;
-    background: grey;
-    height: 25px;
-    width: 25px;
+.button {
     text-align: center;
-    border-radius: 5px;
-    box-shadow: 2px 3px rgb(187, 186, 186);
-}
-
-.digitButton {
-    display: block;
-    border: 2px solid black;
-    background: rgb(39, 39, 39);
-    color: white;
-    height: 25px;
-    width: 25px;
+    border:  black;
+    height: 100%;
+    width: 100%;
+    border: 1px solid rgb(142, 142, 142);
     text-align: center;
-    border-radius: 5px;
-    box-shadow: 2px 3px rgb(187, 186, 186);
+    vertical-align: middle;
+    line-height: 50px;
 }
 
-.button:hover {
-    background: rgb(95, 95, 95);
+.functionButton {
+    background: rgb(254,143,0);
+
+}
+.functionButton:hover {
+    background: rgba(254, 144, 0, 0.75);
+}
+.regularButton {
+    background: rgb(214, 214, 214);
+}
+
+.regularButton:hover {
+    background: rgb(214, 214, 214, 0.75);
 }

@@ -10,32 +10,33 @@
 </head>
 
 <body>
-    <div id="calculator">
-        <div id="displayPanel">
+    <div class="wrapper">
+        <div id="calculator">
             <div id="result"></div>
+            <div id="keypad">
+                <a class="button regularButton" id="CBtn" onclick="keyStroke('C')">C</a>
+                <a class="button regularButton" id="ACBtn" onclick="keyStroke('AC')">AC</a>
+                <a class="button regularButton" id="plusMinusBtn" onclick="keyStroke('p')">+/-</a>
+                <a class="button functionButton" id="divisionBtn" onclick="keyStroke('/')">/</a>
+                <a class="button regularButton" id="sevenBtn" onclick="keyStroke('7')">7</a>
+                <a class="button regularButton" id="eightBtn" onclick="keyStroke('8')">8</a>
+                <a class="button regularButton" id="nineBtn" onclick="keyStroke('9')">9</a>
+                <a class="button functionButton" id="multiplicationBtn" onclick="keyStroke('*')">x</a>
+                <a class="button regularButton" id="sixBtn" onclick="keyStroke('6')">6</a>
+                <a class="button regularButton" id="fiveBtn" onclick="keyStroke('5')">5</a>
+                <a class="button regularButton" id="fourBtn" onclick="keyStroke('4')">4</a>
+                <a class="button functionButton" id="minusBtn" onclick="keyStroke('-')">-</a>
+                <a class="button regularButton" id="oneBtn" onclick="keyStroke('1')">1</a>
+                <a class="button regularButton" id="twoBtn" onclick="keyStroke('2')">2</a>
+                <a class="button regularButton" id="threeBtn" onclick="keyStroke('3')">3</a>
+                <a class="button functionButton" id="plusBtn" onclick="keyStroke('+')">+</a>
+                <a class="button regularButton" id="zeroBtn" onclick="keyStroke('0')">0</a>
+                <a class="button regularButton" id="decimalPointBtn" onclick="keyStroke('.')">.</a>
+                <a class="button regularButton" id="perCentBtn" onclick="keyStroke('%')">%</a>
+                <a class="button functionButton" id="equalBtn" onclick="keyStroke('=')">=</a>
+            </div>
         </div>
-        <div id="keypad">
-            <a class="functionButton" id="CBtn" onclick="keyStroke('C')">C</a>
-            <a class="functionButton" id="ACBtn" onclick="keyStroke('AC')">AC</a>
-            <a class="functionButton" id="plusMinusBtn" onclick="keyStroke('p')">+/-</a>
-            <a class="functionButton" id="divisionBtn" onclick="keyStroke('/')">/</a>
-            <a class="digitButton" id="sevenBtn" onclick="keyStroke('7')">7</a>
-            <a class="digitButton" id="eightBtn" onclick="keyStroke('8')">8</a>
-            <a class="digitButton" id="nineBtn" onclick="keyStroke('9')">9</a>
-            <a class="functionButton" id="multiplicationBtn" onclick="keyStroke('*')">x</a>
-            <a class="digitButton" id="sixBtn" onclick="keyStroke('6')">6</a>
-            <a class="digitButton" id="fiveBtn" onclick="keyStroke('5')">5</a>
-            <a class="digitButton" id="fourBtn" onclick="keyStroke('4')">4</a>
-            <a class="functionButton" id="minusBtn" onclick="keyStroke('-')">-</a>
-            <a class="digitButton" id="oneBtn" onclick="keyStroke('1')">1</a>
-            <a class="digitButton" id="twoBtn" onclick="keyStroke('2')">2</a>
-            <a class="digitButton" id="threeBtn" onclick="keyStroke('3')">3</a>
-            <a class="functionButton" id="plusBtn" onclick="keyStroke('+')">+</a>
-            <a class="digitButton" id="zeroBtn" onclick="keyStroke('0')">0</a>
-            <a class="digitButton" id="decimalPointBtn" onclick="keyStroke('.')">.</a>
-            <a class="functionButton" id="perCentBtn" onclick="keyStroke('%')">%</a>
-            <a class="equalButton" id="equalBtn" onclick="keyStroke('=')">=</a>
-        </div>
+
     </div>
     <script type="text/javascript" src="js.js"></script>
 </body>
