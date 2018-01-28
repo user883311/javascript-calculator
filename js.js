@@ -19,7 +19,12 @@ function keyStroke(input) {
 
     // if user presses "C", delete the last number only
     // if formula is empty, reset it to "0"
-    if (input == "C") { }
+    if (input == "C") {
+        f = f.slice(0, f.length - 1);
+        f = f.replace(/\d*\.?\d*$/, ""); // deletes the last number, or
+        f = f.replace(/(\+|-|\*|\/)$/, ""); // deletes the last operator
+        document.getElementById("result").innerHTML = "";
+    }
     // if user presses "AC" delete the entire formula
     // and reset it to "0"
     if (input == "AC") { f = "0"; }
@@ -52,7 +57,8 @@ function keyStroke(input) {
     // the first possible "-" sign),
     // => evaluate the formula without the last character (the equal sign)
     // => formula = result 
-    if (charOccurencesInString(f.slice(1), binaryOps) == 1 && f[f.length - 1] == equalSign) {
+    // if (charOccurencesInString(f.slice(1), binaryOps) == 1 && f[f.length - 1] == equalSign) {
+    if (f[f.length - 1] == equalSign) {
         result = evaluateFormula(f.slice(0, f.length - 1));
         f = result.toString();
         lastNumberIsResultOfEqualOperation = true;
