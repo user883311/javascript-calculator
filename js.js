@@ -48,10 +48,11 @@ function keyStroke(input) {
         // lastNumberIsResultOfEqualOperation = true;
     }
 
-    // if string includes 1 nos of binary operator and the equal sign 
+    // if string includes 1 nos of binary operator and the equal sign (excluding the 
+    // the first possible "-" sign),
     // => evaluate the formula without the last character (the equal sign)
     // => formula = result 
-    if (charOccurencesInString(f, binaryOps) == 1 && f[f.length - 1] == equalSign) {
+    if (charOccurencesInString(f.slice(1), binaryOps) == 1 && f[f.length - 1] == equalSign) {
         result = evaluateFormula(f.slice(0, f.length - 1));
         f = result.toString();
         lastNumberIsResultOfEqualOperation = true;
@@ -75,8 +76,8 @@ function keyStroke(input) {
 }
 
 function display(f) {
-    console.log("Calling display(" + f + ")");
     /* Displays last number/result onto the display panel of the calculator. */
+    console.log("Calling display(" + f + ")");
     let result;
     let r1 = /^-?\d*\.?\d*$/g;
     let r2 = /--\d*\.?\d*$/g;
