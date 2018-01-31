@@ -97,10 +97,12 @@ function display(f, buttonID) {
     }
 
     // if too many digits, express result in powers of 10.
-    // Note the display can fit exactly 11 digits or decimal pt
+
+    // Also note the display can fit exactly 11 digits or decimal 
+    // pt, so truncate the decimals in case there are too many
     numberDisplayed= numberDisplayed.slice(0,11);
 
-    // display
+    // display to document
     console.log("display(" + f + ") returns", numberDisplayed);
     document.getElementById("result").innerHTML = numberDisplayed;
 

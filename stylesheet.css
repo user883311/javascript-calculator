@@ -63,3 +63,9 @@ body {
 .regularButton:hover {
     background: rgb(214, 214, 214, 0.75);
 }
+
+footer {
+    text-align: center;
+    padding-top: 100px;
+    color: rgb(37, 37, 37);
+}
