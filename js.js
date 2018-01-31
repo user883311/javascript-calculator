@@ -97,6 +97,7 @@ function display(f, buttonID) {
     }
 
     // if too many digits, express result in powers of 10.
+    
 
     // Also note the display can fit exactly 11 digits or decimal 
     // pt, so truncate the decimals in case there are too many
