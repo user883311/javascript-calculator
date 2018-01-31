@@ -1,5 +1,6 @@
 var operandArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 var binaryOps = ["+", "-", "*", "/"];
+// Note: the "+/-" function is represented by a "p"
 var equalSign = "=";
 var f = "0";// initialization
 var result;
@@ -97,7 +98,7 @@ function display(f, buttonID) {
 
     // if too many digits, express result in powers of 10.
     // Note the display can fit exactly 11 digits or decimal pt
-
+    numberDisplayed= numberDisplayed.slice(0,11);
 
     // display
     console.log("display(" + f + ") returns", numberDisplayed);
