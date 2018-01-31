@@ -1,8 +1,7 @@
 var operandArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-var unaryOps = ["p", "%"];
 var binaryOps = ["+", "-", "*", "/"];
 var equalSign = "=";
-var f = "0";
+var f = "0";// initialization
 var result;
 var lastNumberIsResultOfEqualOperation = false;
 
@@ -39,24 +38,20 @@ function keyStroke(input, buttonID) {
         f = f.slice(0, f.length - 1);
     }
 
-    // if decimal point followed by an operator
-    // remove the decimal point
+    // if decimal point followed by an operator, remove the decimal point
     f = f.replace(/\.([+-/*%p])/g, "$1");
 
     // if the string includes 2 nos of binary operators (excluding the 
     // the first possible "-" sign), 
     // => evaluate the formula without the last binary operator
-    // => formula = result + new binary operator 
     if (charOccurencesInString(f.slice(1), binaryOps) > 1) {
         result = evaluateFormula(f.slice(0, f.length - 1));
         f = result.toString() + f[f.length - 1];
-        // lastNumberIsResultOfEqualOperation = true;
     }
 
     // if string includes 1 nos of binary operator and the equal sign (excluding the 
     // the first possible "-" sign),
     // => evaluate the formula without the last character (the equal sign)
-    // => formula = result 
     // if (charOccurencesInString(f.slice(1), binaryOps) == 1 && f[f.length - 1] == equalSign) {
     if (f[f.length - 1] == equalSign) {
         result = evaluateFormula(f.slice(0, f.length - 1));
@@ -69,9 +64,7 @@ function keyStroke(input, buttonID) {
 
     // apply minus operation to a number followed by "p"
     f = f.replace(/(\d*?\.?\d*?)p/, "-$1"); // for "+/-"
-    // What if user presses "+/-" several times ? 
-
-
+    
     // if there is a "%""
     if (/%/.test(f)) {
         f = divideLastNumberByHundred(f);
@@ -124,21 +117,7 @@ function display(f, buttonID) {
     }
 }
 
-function toggleButton(id) {
-    var element = document.getElementById(id);
-    element.classList.add("clicked");
-}
-
-
-// display("-35-");
-// display("5*-4");
-// display("35");
-// display("-5.01");
-// display("4+5");
-// display("-1-5");
-// display("-4+-5");
-// display("-4--5");
-// display("-4.01+-5.01");
+function toggleButton(id) {document.getElementById(id).classList.add("clicked");}
 
 function charOccurencesInString(aStr, anArrOfChars) {
     /*
@@ -160,7 +139,6 @@ function divideByHundred(nStr) {
     result /= Math.pow(10, 2 + decimals);
     return result;
 }
-// console.log(divideByHundred("5.6"));
 
 function divideLastNumberByHundred(f) {
     // just divide last number by 100 and eval the last number
@@ -171,8 +149,6 @@ function divideLastNumberByHundred(f) {
     index = f.match(/(\d*\.?\d*)%/).index;
     return f.slice(0, index) + result;
 }
-// console.log(divideLastNumberByHundred("3%"));
-// console.log(divideLastNumberByHundred("4+5%"));
 
 function evaluateFormula(f) {
     /*
@@ -229,14 +205,6 @@ function evaluateFormula(f) {
         return result;
     }
 }
-// console.log(evaluateFormula("45+3.02")); // 48.02
-// console.log(evaluateFormula("45-3.02"));
-// console.log(evaluateFormula("45*3.02"));
-// console.log(evaluateFormula("45/3.02"));
-// console.log(evaluateFormula("45+-3.02"));
-// console.log(evaluateFormula("45--3.02")); // 48.02
-// console.log(evaluateFormula("45*-3.02"));
-// console.log(evaluateFormula("45/-3.02"));
 
 function multiplyByTen(str) {
     if (/\./.test(str) == false) { return str * 10 }
@@ -252,8 +220,6 @@ function multiplyByTen(str) {
         return result;
     }
 }
-// console.log(multiplyByTen("101."));
-// console.log(multiplyByTen("40.23"));
 
 //------------------
 // FOR TESTING ONLY
@@ -261,12 +227,3 @@ function strToKeyStroke(str) {
     console.log("Calling strToKeyStroke(" + str + ")");
     for (j = 0; j < str.length; j++) { keyStroke(str[j]); }
 }
-// strToKeyStroke("45+3.0p=1");
-// strToKeyStroke("45-3.02p=1");
-// strToKeyStroke("45*3.02p=1");
-// strToKeyStroke("45+3.02%=1");
-// strToKeyStroke("45+3.02p=1");
-// strToKeyStroke("45+3.02p=1");
-// strToKeyStroke("45+3.02p=1");
-// strToKeyStroke("45+3.02p=1");
-// strToKeyStroke("00045.200*0045%=");
