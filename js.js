@@ -6,7 +6,7 @@ var f = "0";
 var result;
 var lastNumberIsResultOfEqualOperation = false;
 
-function keyStroke(input) {
+function keyStroke(input, buttonID) {
     console.log("-- Calling keyStroke(" + input + ")");
     f += input;
     // if last element in string is a number && result
@@ -70,7 +70,7 @@ function keyStroke(input) {
     // apply minus operation to a number followed by "p"
     f = f.replace(/(\d*?\.?\d*?)p/, "-$1"); // for "+/-"
     // What if user presses "+/-" several times ? 
-    
+
 
     // if there is a "%""
     if (/%/.test(f)) {
@@ -79,11 +79,11 @@ function keyStroke(input) {
     }
 
     // Finally, update display panel
-    display(f);
+    display(f, buttonID);
     console.log(lastNumberIsResultOfEqualOperation);
 }
 
-function display(f) {
+function display(f, buttonID) {
     /* Displays last number/result onto the display panel of the calculator. */
     // console.log("Calling display(" + f + ")");
     let lastEl, op, numberDisplayed;
@@ -103,6 +103,7 @@ function display(f) {
     }
 
     // if too many digits, express result in powers of 10.
+    // Note the display can fit exactly 11 digits or decimal pt
 
 
     // display
@@ -111,14 +112,24 @@ function display(f) {
 
     // if last char is binary operator
     // then toggle the operator button in HTML
-    if (binaryOps.indexOf(lastEl[lastEl.length - 1]) != -1) {
-        // toggle
+    if (buttonID != undefined && binaryOps.indexOf(lastEl[lastEl.length - 1]) != -1) {
+        toggleButton(buttonID)
     }
     else {
-        // untoggle
-
+        // untoggle all buttons
+        let functionButtonArr = ["divisionBtn", "multiplicationBtn", "minusBtn", "plusBtn"];
+        functionButtonArr.forEach(element => {
+            document.getElementById(element).classList.remove("clicked");
+        });
     }
 }
+
+function toggleButton(id) {
+    var element = document.getElementById(id);
+    element.classList.add("clicked");
+}
+
+
 // display("-35-");
 // display("5*-4");
 // display("35");

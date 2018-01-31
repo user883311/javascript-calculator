@@ -10,6 +10,7 @@ body {
 #calculator {
     justify-self: center;
     background: black;
+    background-color: rgb(142, 142, 142);
     display: grid;
     grid-column: 2;
     grid-template-columns: repeat(1, 1fr);
@@ -19,8 +20,8 @@ body {
     text-align: right;
     font-size: xx-large;
     height: 60px;
-    width: 200px;
-    border: 1px solid rgb(142, 142, 142);
+    width: 203px;
+    /* border: 1px solid rgb(142, 142, 142); */
     background: rgb(41, 41, 41);
     color: rgb(242,255,255);
     vertical-align: middle;
@@ -32,6 +33,7 @@ body {
     grid-template-columns: repeat(4, 50px);
     grid-template-rows: repeat(6, 50px);
     height: 250px;
+    grid-gap: 1px;
 }
 
 .button {
@@ -39,7 +41,7 @@ body {
     border:  black;
     height: 100%;
     width: 100%;
-    border: 1px solid rgb(142, 142, 142);
+    /* border: 1px solid rgb(142, 142, 142); */
     text-align: center;
     vertical-align: middle;
     line-height: 50px;
@@ -47,8 +49,12 @@ body {
 
 .functionButton {
     background: rgb(254,143,0);
-
 }
+
+.clicked{
+    background: rgba(254, 144, 0, 0.5);
+}
+
 .functionButton:hover {
     background: rgba(254, 144, 0, 0.75);
 }
